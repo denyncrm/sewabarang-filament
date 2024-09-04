@@ -20,7 +20,7 @@ class Transaction extends Model
         'ended_at'=>'date',
     ];
 
-    public function generateUniqueTrxId(){
+    public static function generateUniqueTrxId(){
         $prefix = 'RE';
         do {
             $randomString = $prefix.mt_rand(1000,9999);

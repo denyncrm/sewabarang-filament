@@ -11,7 +11,7 @@
 	<body>
 		<main class="max-w-[640px] mx-auto min-h-screen flex flex-col relative has-[#Bottom-nav]:pb-[144px]">
 			<div id="Top-navbar" class="flex items-center justify-between pt-5 px-5">
-				<a href="index.html" class="flex shrink-0">
+				<a href="{{ route('front.index') }}" class="flex shrink-0">
 					<img src="{{asset('assets/images/logos/logo.svg')}}" alt="logo" />
 				</a>
 				<a href="#" class="w-11 h-11 flex shrink-0">
@@ -45,7 +45,7 @@
 				<div class="swiper w-full h-fit">
 					<div class="swiper-wrapper">
                         @forelse ($latest_products as $latest_product)
-						<a href="details.html" class="swiper-slide max-w-[150px] first-of-type:ml-5 last-of-type:mr-5">
+						<a href="{{ route('front.details', $latest_product->slug) }}" class="swiper-slide max-w-[150px] first-of-type:ml-5 last-of-type:mr-5">
 							<div class="flex flex-col gap-3 bg-white">
 								<div class="h-[130px] flex shrink-0 items-center rounded-2xl overflow-hidden bg-[#F6F6F6]">
 									<div class="h-[70px] w-full flex shrink-0 justify-center">
@@ -75,17 +75,18 @@
 			<section id="Recommendation" class="flex flex-col gap-[10px] mt-[30px] px-5">
 				<h2 class="font-semibold text-lg leading-[27px]">You Might Like</h2>
 				<div class="flex flex-col gap-5">
-					<a href="details.html" class="card">
+					@forelse ($rand_products as $irp)
+						<a href="{{ route('front.details', $irp->slug) }}" class="card">
 						<div class="flex items-center gap-3">
 							<div class="w-20 h-20 flex shrink-0 rounded-2xl overflow-hidden bg-[#F6F6F6] items-center">
 								<div class="w-full h-[50px] flex shrink-0 justify-center">
-									<img src="{{asset('assets/images/thumbnails/iphone15pro-digitalmat-gallery-3-202309-Photoroom 1.png')}}" class="h-full w-full object-contain" alt="thumbnail" />
+									<img src="{{Storage::url($irp->thumbnail)}}" class="h-full w-full object-contain" alt="thumbnail" />
 								</div>
 							</div>
 							<div class="w-full flex flex-col gap-1">
-								<p class="font-semibold">iPhone 15 Pro</p>
+								<p class="font-semibold">{{ $irp->name }}</p>
 								<div class="flex items-center justify-between">
-									<p class="text-sm leading-[21px] text-[#6E6E70]">Rp 180.000/day</p>
+									<p class="text-sm leading-[21px] text-[#6E6E70]">Rp {{ number_format($irp->price,0,',','.') }}/day</p>
 									<div class="flex items-center w-fit gap-[2px]">
 										<div class="w-4 h-4 flex shrink-0">
 											<img src="{{asset('assets/images/icons/Star 1.svg')}}" alt="star" />
@@ -96,76 +97,16 @@
 							</div>
 						</div>
 					</a>
-					<a href="details.html" class="card">
-						<div class="flex items-center gap-3">
-							<div class="w-20 h-20 flex shrink-0 rounded-2xl overflow-hidden bg-[#F6F6F6] items-center">
-								<div class="w-full h-[50px] flex shrink-0 justify-center">
-									<img src="{{asset('assets/images/thumbnails/color_back_green__buxxfjccqjzm_large_2x-Photoroom 1.png')}}" class="h-full w-full object-contain" alt="thumbnail" />
-								</div>
-							</div>
-							<div class="w-full flex flex-col gap-1">
-								<p class="font-semibold">iMac Powerless</p>
-								<div class="flex items-center justify-between">
-									<p class="text-sm leading-[21px] text-[#6E6E70]">Rp 5.800.000/day</p>
-									<div class="flex items-center w-fit gap-[2px]">
-										<div class="w-4 h-4 flex shrink-0">
-											<img src="{{asset('assets/images/icons/Star 1.svg')}}" alt="star" />
-										</div>
-										<p class="text-sm leading-[21px]"><span class="font-semibold">4/5</span> <span class="text-[#6E6E70]">(123)</span></p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-					<a href="details.html" class="card">
-						<div class="flex items-center gap-3">
-							<div class="w-20 h-20 flex shrink-0 rounded-2xl overflow-hidden bg-[#F6F6F6] items-center">
-								<div class="w-full h-[50px] flex shrink-0 justify-center">
-									<img src="{{asset('assets/images/thumbnails/airpods-max-select-skyblue-202011-Photoroom 1.png')}}" class="h-full w-full object-contain" alt="thumbnail" />
-								</div>
-							</div>
-							<div class="w-full flex flex-col gap-1">
-								<p class="font-semibold">AirPod Deluxe</p>
-								<div class="flex items-center justify-between">
-									<p class="text-sm leading-[21px] text-[#6E6E70]">Rp 5.800.000/day</p>
-									<div class="flex items-center w-fit gap-[2px]">
-										<div class="w-4 h-4 flex shrink-0">
-											<img src="{{asset('assets/images/icons/Star 1.svg')}}" alt="star" />
-										</div>
-										<p class="text-sm leading-[21px]"><span class="font-semibold">4/5</span> <span class="text-[#6E6E70]">(45)</span></p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-					<a href="details.html" class="card">
-						<div class="flex items-center gap-3">
-							<div class="w-20 h-20 flex shrink-0 rounded-2xl overflow-hidden bg-[#F6F6F6] items-center">
-								<div class="w-full h-[50px] flex shrink-0 justify-center">
-									<img src="{{asset('assets/images/thumbnails/mba13-m2-digitalmat-gallery-1-202402-Photoroom 2.png')}}" class="h-full w-full object-contain" alt="thumbnail" />
-								</div>
-							</div>
-							<div class="w-full flex flex-col gap-1">
-								<p class="font-semibold">Macbook Pro 13”</p>
-								<div class="flex items-center justify-between">
-									<p class="text-sm leading-[21px] text-[#6E6E70]">Rp 124.000.000/day</p>
-									<div class="flex items-center w-fit gap-[2px]">
-										<div class="w-4 h-4 flex shrink-0">
-											<img src="{{asset('assets/images/icons/Star 1.svg')}}" alt="star" />
-										</div>
-										<p class="text-sm leading-[21px]"><span class="font-semibold">4/5</span> <span class="text-[#6E6E70]">(66)</span></p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
+					@empty
+						<p>Product Sedang Kosong</p>
+					@endforelse
 				</div>
 			</section>
 			<div id="Bottom-nav" class="fixed bottom-0 max-w-[640px] w-full mx-auto border-t border-[#F1F1F1] overflow-hidden z-10">
 				<div class="bg-white/50 backdrop-blur-sm absolute w-full h-full"></div>
 				<ul class="flex items-center gap-3 justify-evenly p-5 relative z-10">
 					<li>
-						<a href="index.html">
+						<a href="{{ route('front.index') }}">
 							<div class="group flex flex-col items-center text-center gap-2 transition-all duration-300 hover:text-black">
 								<div class="w-6 h-6 flex shrink-0">
 									<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">

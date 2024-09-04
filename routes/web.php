@@ -12,7 +12,7 @@ Route::get('/transactions',[FrontController::class, 'transactions'])->name('fron
 
 Route::post('/transactions/details',[FrontController::class, 'transactions_details'])->name('front.transaction.details');
 
-Route::get('/details',[FrontController::class, 'details'])->name('front.details');
+Route::get('/details/{product:slug}',[FrontController::class, 'details'])->name('front.details');
 
 Route::get('/booking/{product:slug}',[FrontController::class, 'booking'])->name('front.booking');
 
