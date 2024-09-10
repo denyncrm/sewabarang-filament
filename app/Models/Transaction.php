@@ -20,11 +20,13 @@ class Transaction extends Model
         'ended_at'=>'date',
     ];
 
-    public static function generateUniqueTrxId(){
+    public static function generateUniqueTrxId()
+    {
         $prefix = 'RE';
         do {
-            $randomString = $prefix.mt_rand(1000,9999);
-        } while (self::where('trx_id',$randomString)->exist());
+            $randomString = $prefix . mt_rand(1000,9999);
+        } while (self::where('trx_id', $randomString)->exists());
+        
         return $randomString;
     }
 

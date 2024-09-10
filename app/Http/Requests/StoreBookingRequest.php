@@ -22,10 +22,10 @@ class StoreBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'duration'=>['required','integer','min:1'],
-            'store_id'=>['required','integer'],
-            'started_at'=>['required','date','after:today'],
-            'address'=>['required','string'],
+            'duration' => ['required','integer','min:1'],
+            'store_id' => ['required','integer'],
+            'started_at' => ['required','date','after:today'],
+            'address' => ['required','string'],
         ];
     }
 }

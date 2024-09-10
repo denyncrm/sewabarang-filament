@@ -1,13 +1,5 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ asset('output.css') }}" rel="stylesheet">
-    <link href="{{ asset('main.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-</head>
-<body>
+<x-layout>
+    <x-slot:title>Checkout</x-slot:title>
     <main class="max-w-[640px] mx-auto min-h-screen flex flex-col relative has-[#Bottom-nav]:pb-[144px]">
         <div id="Top-navbar" class="flex items-center justify-between px-5 pt-5">
             <a href="{{ url()->previous() }}">
@@ -67,7 +59,7 @@
                         <div class="w-6 h-6 flex shrink-0">
                             <img src="{{ asset('assets/images/icons/call.svg') }}" alt="icon">
                         </div>
-                        <input type="tel" name="phone_number" id="Name" class="appearance-none outline-none rounded-2xl w-full placeholder:font-normal placeholder:text-black font-semibold text-sm leading-[24px]" placeholder="Write your phone number" required>
+                        <input type="tel" name="phone_number" id="phoneNumber" class="appearance-none outline-none rounded-2xl w-full placeholder:font-normal placeholder:text-black font-semibold text-sm leading-[24px]" placeholder="Write your phone number" required>
                     </div>
                 </div>
             </div>
@@ -102,7 +94,7 @@
                     </div>
                     <div class="flex flex-col gap-[2px]">
                         <div class="flex items-center w-fit gap-1">
-                            <p class="font-semibold">Sewa Angga Indonesia</p>
+                            <p class="font-semibold">Bambang Widodo</p>
                             <div class="w-[18px] h-[18px] flex shrink-0">
                                 <img src="{{ asset('assets/images/icons/verify.svg') }}" alt="verify">
                             </div>
@@ -116,7 +108,7 @@
                     </div>
                     <div class="flex flex-col gap-[2px]">
                         <div class="flex items-center w-fit gap-1">
-                            <p class="font-semibold">Sewa Angga Indonesia</p>
+                            <p class="font-semibold">Bambang Widodo</p>
                             <div class="w-[18px] h-[18px] flex shrink-0">
                                 <img src="{{ asset('assets/images/icons/verify.svg') }}" alt="verify">
                             </div>
@@ -154,6 +146,8 @@
         </form>
     </main>
 
+    @push('before-scripts')
+        
     <script src="{{ asset('customjs/checkout.js') }}"></script>
-</body>
-</html>
+    @endpush
+</x-layout>

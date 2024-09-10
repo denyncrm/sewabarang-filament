@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="{{ asset('output.css') }}" rel="stylesheet">
-	<link href="{{ asset('main.css') }}" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
-		rel="stylesheet" />
-</head>
-
-<body>
+<x-layout>
+	<x-slot:title>Booking</x-slot:title>
 	<main class="max-w-[640px] mx-auto min-h-screen flex flex-col relative has-[#Bottom-nav]:pb-[144px]">
 		<div id="Top-navbar" class="flex items-center justify-between px-5 pt-5">
-			<a href="{{ url()->previous() }}">
+			<a href="details.html">
 				<div class="size-[44px] flex shrink-0">
 					<img src="{{ asset('assets/images/icons/arrow-left.svg') }}" alt="icon" />
 				</div>
@@ -62,10 +51,13 @@
 				<img src="{{ asset('assets/images/backgrounds/promo.png') }}" class="w-full h-full object-cover" alt="promo" />
 			</div>
 		</a>
-		<form method="POST" action="{{ route('front.booking.save', $product->slug) }}" class="flex flex-col gap-[30px] mt-[30px]">
+		<form method="POST" action="{{ route('front.booking_save', $product->slug) }}" class="flex flex-col gap-[30px] mt-[30px]">
 			@csrf
-			<input type="hidden" value="{{ $product->price }}" id="productPrice"/>
-			<input type="hidden" name="duration" value="1" id="Durations"/>
+			<input type="hidden" value="{{ $product->price }}" id="productPrice">
+			<input type="hidden" name="delivery_type" value="pickup" id="deliveryType">
+			<input type="hidden" name="store_id" value="" id="storeId" required/>
+			<input type="hidden" name="duration" id="duration" value="1" class="absolute -z-10 opacity-0 w-1"
+						required />
 			<div class="flex items-center justify-between px-5">
 				<label for="days" class="font-semibold">How many days?</label>
 				<div class="flex items-center gap-3 relative">
@@ -107,7 +99,7 @@
 								</div>
 								<p>Pickup Store</p>
 							</div>
-							<input type="radio" name="delivery_type" value="pickup" id="Pickup"
+							<input type="radio" name="delivery-type" id="Pickup"
 								class="absolute -z-10 top-1/2 left-1/2 opacity-0" onchange="toggleRequiredOptions()"
 								required />
 						</label>
@@ -120,14 +112,14 @@
 								</div>
 								<p>Delivery</p>
 							</div>
-							<input type="radio" name="delivery_type" value="home_delivery" id="Delivery"
+							<input type="radio" name="delivery-type" id="Delivery"
 								class="absolute -z-10 top-1/2 left-1/2 opacity-0" onchange="toggleRequiredOptions()"
 								required />
 						</label>
 					</div>
 					<div class="tabs-contents">
 						<div id="pickup-tab" class="tabcontent flex flex-col gap-4 hidden">
-							@forelse ($stores as $store)	
+							@foreach ($stores as $store)
 							<label
 								class="relative w-full rounded-2xl p-[18px_14px] border border-[#EDEEF0] transition-all duration-300 hover:ring-2 hover:ring-[#FCCF2F] has-[:checked]:ring-2 has-[:checked]:ring-[#FCCF2F]">
 								<div class="flex items-center gap-3">
@@ -142,9 +134,7 @@
 								<input type="radio" value="{{ $store->id }}" name="store_id" id="store_id"
 									class="absolute -z-10 top-1/2 left-1/2 opacity-0" />
 							</label>
-							@empty
-								<p>Toko Tidak Tersedia</p>
-							@endforelse
+							@endforeach
 						</div>
 						<div id="delivery-tab" class="tabcontent flex flex-col hidden">
 							<div class="flex flex-col gap-1">
@@ -182,7 +172,8 @@
 		</form>
 	</main>
 
+	@push('before-scripts')
+		
 	<script src="{{ asset('customjs/booking.js') }}"></script>
-</body>
-
-</html>
+	@endpush
+</x-layout>

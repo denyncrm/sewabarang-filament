@@ -42,14 +42,15 @@ class FrontController extends Controller
     }
 
     public function booking(Product $product){
-        $stores = Store::all();
+        $stores = Store::where('is_open', true)->get();
         return view('front.booking', compact('product','stores'));
         
     }
 
     public function booking_save(StoreBookingRequest $request, Product $product){
-        session()->put('product_id',$product->id);
+        session()->put('product_id', $product->id);
         $bookingData = $request->only(['duration', 'started_at', 'store_id','delivery_type', 'address']);
+
         session($bookingData);
 
         return redirect()->route('front.checkout', $product->slug);
@@ -71,8 +72,9 @@ class FrontController extends Controller
 
     public function checkout_store(StorePaymentRequest $request){
         $bookingData = session()->only(['duration', 'started_at', 'store_id','delivery_type', 'address','product_id']);
-
+        
         $duration = (int) $bookingData['duration'];
+        
         $startedDate = Carbon::parse($bookingData['started_at']);
 
         $productDetails = Product::find($bookingData['product_id']);
@@ -99,7 +101,7 @@ class FrontController extends Controller
             }
 
             $endedDate = $startedDate->copy()->addDays($duration);
-
+            
             $validated['started_at'] = $startedDate;
             $validated['ended_at'] = $endedDate;
             $validated['duration'] = $duration;
@@ -117,5 +119,42 @@ class FrontController extends Controller
             
         });
         return redirect()->route('front.success.booking', $bookingTransactionId);
+    }
+
+    public function success_booking(Transaction $transaction) {
+        return view('front.success_booking', compact('transaction'));
+    }
+
+    public function transactions() {
+        return view('front.transactions');
+    }
+
+    public function transactions_details(Request $request) {
+        $request->validate([
+            'trx_id' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:255'],
+        ]);
+
+        $trx_id = $request->input('trx_id');
+        $phone_number = $request->input('phone_number');
+
+        $details = Transaction::with(['store', 'product'])
+        ->where('trx_id', $trx_id)
+        ->where('phone_number', $phone_number)
+        ->first();
+
+        if(!$details) {
+            return redirect()->back()->withErrors(['error'=>'Transaction Not Found']);
+        }
+
+        $ppn = 0.11;
+        $insurance = 900000;
+        $totalPpn = $details->product->price * $ppn;
+        $duration = $details->duration;
+        $subTotal = $details->product->price * $duration;
+
+        return view('front.transaction_details', compact('details', 'insurance', 'totalPpn', 'subTotal'));
+
+
     }
 }

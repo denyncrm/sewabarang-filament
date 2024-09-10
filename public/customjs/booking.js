@@ -3,9 +3,9 @@ const minus = document.getElementById("Minus");
 const plus = document.getElementById("Plus");
 const count = document.getElementById("CountDays");
 const days = document.getElementById("Days");
-const durations = document.getElementById("Durations");
+const duration = document.getElementById("duration");
 const totalPrice = document.getElementById("Total");
-const productPrice = document.getElementById("productPrice");
+const productPrice = document.getElementById("productPrice")
 const defaultPrice = productPrice.value;
 
 function updateTotalPrice() {
@@ -18,8 +18,8 @@ minus.addEventListener("click", function() {
     if (currentCount > 1) {
         currentCount -= 1;
         count.innerText = currentCount;
+        duration.value = currentCount;
         days.value = currentCount;
-        durations.value = currentCount;
         updateTotalPrice();
     }
 });
@@ -28,8 +28,8 @@ plus.addEventListener("click", function() {
     let currentCount = parseInt(count.innerText);
     currentCount += 1;
     count.innerText = currentCount;
+    duration.value = currentCount;
     days.value = currentCount;
-    durations.value = currentCount;
     updateTotalPrice();
 });
 
@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function toggleRequiredOptions() {
     const pickupRadio = document.getElementById('Pickup');
     const deliveryRadio = document.getElementById('Delivery');
+    const deliveryType = document.getElementById('deliveryType');
     const storeRadios = document.getElementsByName('store');
     const addressTextarea = document.getElementsByName('address')[0];
 
@@ -90,11 +91,14 @@ function toggleRequiredOptions() {
         });
         // addressTextarea.required = false;
         addressTextarea.value = 'Diambil Ditoko';
+        deliveryType.value = 'pickup';
     } else if (deliveryRadio.checked) {
         storeRadios.forEach(radio => {
             radio.required = false;
         });
         // addressTextarea.required = true;
-        // addressTextarea.value = '';
+        addressTextarea.value = '';
+        deliveryType.value = 'home_delivery';
+        document.querySelector('input[name="store_id"]').value = 1;
     }
 }
